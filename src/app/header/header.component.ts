@@ -8,14 +8,9 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 export class HeaderComponent implements OnInit {
   collapsed = true;
 
-  @Output() navbarEmitter = new EventEmitter<string>();
-
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  navbarClicked(clicked: string) {
-    this.navbarEmitter.emit(clicked);
-  }
 }
