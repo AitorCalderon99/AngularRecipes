@@ -24,6 +24,9 @@ export class RecipesService {
   get recipes(): Recipe[] {
     return this._recipes;
   }
+  getRecipe(id: number) {
+    return this._recipes[id];
+  }
 
   addIngredientsToShoppingList(ingredients: Ingredient[]){
     /*for (const ingredient of Ingredients) {
@@ -31,5 +34,6 @@ export class RecipesService {
     }*/
     this.shoppingListServ.addIngredients(ingredients);
   }
+
 
 }

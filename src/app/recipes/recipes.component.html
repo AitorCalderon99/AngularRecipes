@@ -3,11 +3,6 @@
     <app-recipe-list></app-recipe-list>
   </div>
   <div class="col-md-7">
-
-    <app-recipe-detail
-      *ngIf="selectedRecipe"
-    [recipe]="selectedRecipe">
-<!--      <ng-template #elsebl>Content to render when value is null.</ng-template>-->
-    </app-recipe-detail>
+    <router-outlet></router-outlet>
   </div>
 </div>
