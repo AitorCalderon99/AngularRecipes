@@ -14,8 +14,8 @@
       <div class="row">
         <div class="col-xs-12">
           <button class="btn btn-success" [disabled]="!f.valid">{{ editMode ? 'Update' : 'Add'}}</button>
-          <button class="btn btn-danger" type="button">Remove</button>
-          <button class="btn btn-primary" type="button">Clear</button>
+          <button class="btn btn-danger" type="button" *ngIf="editMode" (click)="onClickDelete()">Remove</button>
+          <button class="btn btn-primary" type="button" (click)="onClickClear()">Clear</button>
 
         </div>
       </div>
