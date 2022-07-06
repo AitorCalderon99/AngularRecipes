@@ -34,6 +34,13 @@ export class RecipesService {
     this.shoppingListServ.addIngredients(ingredients);
   }
 
+  addRecipe(recipe: Recipe){
+    this._recipes.push(recipe);
+  }
+  updateRecipe(index: number, recipe: Recipe){
+    this._recipes[index] = recipe;
+  }
+
 
 
 
