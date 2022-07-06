@@ -42,6 +42,7 @@ export class RecipesService {
   }
 
 
-
-
+  deleteRecipe(id: number) {
+    this._recipes.splice(id,1);
+  }
 }
