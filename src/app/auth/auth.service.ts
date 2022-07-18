@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {catchError} from "rxjs/operators";
-import {throwError} from "rxjs";
+import {catchError, tap} from "rxjs/operators";
+import {Subject, throwError} from "rxjs";
+import {User} from "./user.model";
 
 export interface AuthResponseData {
   idToken: string,
   email: string,
   refreshToken: string,
-  expiresIn: string,
+  expiresIn: number,
   localId: string,
   registered?: boolean;
 }
@@ -17,12 +18,14 @@ export interface AuthResponseData {
 })
 export class AuthService {
 
+  user = new Subject<User>()
+
   constructor(private http: HttpClient) {
   }
 
-  private handleError(errorRes: HttpErrorResponse){
+  private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = 'An uknown error ocurred.'
-    if (!errorRes.error || !errorRes.error.error){
+    if (!errorRes.error || !errorRes.error.error) {
       return throwError(errorMessage);
     }
     switch (errorRes.error.error.message) {
@@ -45,13 +48,22 @@ export class AuthService {
     return throwError(errorMessage);
   }
 
-  login(email: string, password: string,){
+  private handleAuth(email: string, localId: string, idToken: string, expiresIn: number) {
+
+    let expirationDate = new Date(new Date().getTime() + +expiresIn * 1000)
+    const user = new User(email, localId, idToken, expirationDate)
+    this.user.next(user);
+  }
+
+  login(email: string, password: string,) {
     return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBgZUcL-r-8EQ1QTuSCRplRCREvYzAorZY',
       {
         email: email,
         password: password,
         returnSecureToken: true
-      }).pipe(catchError(this.handleError));
+      }).pipe(catchError(this.handleError), tap(resData => {
+      this.handleAuth(resData.email, resData.localId, resData.idToken, +resData.expiresIn)
+    }));
   }
 
   signUp(email: string, password: string,) {
@@ -60,6 +72,8 @@ export class AuthService {
         email: email,
         password: password,
         returnSecureToken: true
-      }).pipe(catchError(this.handleError));
+      }).pipe(catchError(this.handleError), tap(resData => {
+      this.handleAuth(resData.email, resData.localId, resData.idToken, +resData.expiresIn)
+    }));
   }
 }
