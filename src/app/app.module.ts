@@ -4,7 +4,6 @@ import {AppComponent} from './app.component';
 import {HeaderComponent} from './header/header.component';
 import {RouterModule} from "@angular/router";
 import {RecipesService} from "./recipes/recipes.service";
-import {ShoppingListService} from "./shopping-list/shopping-list.service";
 import {AppRoutingModule} from "./app-routing.module";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
@@ -26,7 +25,7 @@ import {shoppingListReducer} from "./shopping-list/store/shopping-list.reducer";
     HttpClientModule,
     SharedModule
   ],
-  providers: [RecipesService, ShoppingListService, {
+  providers: [RecipesService, {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true
