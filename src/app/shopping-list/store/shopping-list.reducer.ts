@@ -7,11 +7,6 @@ export interface State {
   editedIngredientIndex: number;
 }
 
-export interface AppState {
-  shoppingList: State;
-
-}
-
 const initialState: State = {
   ingredients: [
     new Ingredient('Apples', 10),
@@ -21,7 +16,7 @@ const initialState: State = {
   editedIngredientIndex: -1
 }
 
-export function shoppingListReducer(state: State = initialState, action: ShoppingListActions.ShoppingListActions) {
+export function shoppingListReducer(state: State = initialState, action: ShoppingListActions.ShoppingListActions): any {
   switch (action.type) {
     case ShoppingListActions.UPDATE_INGREDIENT:
       const ingredient = state.ingredients[state.editedIngredientIndex];

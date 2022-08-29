@@ -2,10 +2,9 @@ import {Injectable, OnInit} from '@angular/core';
 import {Recipe} from "./recipe.model";
 import {Ingredient} from "../shared/ingredient.model";
 import {Subject} from "rxjs";
-import {DataStorageService} from "../shared/data-storage.service";
 import {Store} from "@ngrx/store";
 import * as ShoppingListActions from "../shopping-list/store/shopping-list.actions";
-import * as fromShoppingListActions from "../shopping-list/store/shopping-list.reducer";
+import * as fromApp from '../store/app.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +28,7 @@ export class RecipesService {
   // ];
   private recipes: Recipe[] = [];
 
-  constructor(private store: Store<fromShoppingListActions.AppState>) {
+  constructor(private store: Store<fromApp.AppState>) {
   }
 
   setRecipes(recipes: Recipe[]) {
