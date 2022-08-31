@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, ofType, Effect } from '@ngrx/effects';
 import { switchMap, catchError, map, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import {of, throwError} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import * as AuthActions from './auth.actions';
@@ -42,11 +42,37 @@ export class AuthEffects {
             });
           }),
           catchError(errorRes => {
-            return of();
+            let errorMessage = 'An uknown error ocurred.'
+            if (!errorRes.error || !errorRes.error.error) {
+              return of(new AuthActions.LoginFail(errorMessage));
+            }
+            switch (errorRes.error.error.message) {
+              case 'EMAIL_EXISTS':
+                errorMessage = 'Email exists';
+                break;
+              case 'OPERATION_NOT_ALLOWED':
+                errorMessage = 'Operation not allowed, please contact with the administrator';
+                break;
+              case 'TOO_MANY_ATTEMPTS_TRY_LATER':
+                errorMessage = 'Too many sign up attempts, try again later';
+                break;
+              case 'EMAIL_NOT_FOUND':
+                errorMessage = 'Account not found';
+                break;
+              case 'INVALID_PASSWORD':
+                errorMessage = 'The password is invalid or the user does not have a password';
+                break;
+            }
+            return of(new AuthActions.LoginFail(errorMessage));
           })
         );
     })
   );
+  @Effect({dispatch: false})
+  authSuccess = this.actions$.pipe(ofType(AuthActions.LOGIN),
+    tap(()=> {
+      this.router.navigate(['/']);
+    }));
 
   constructor(
     private actions$: Actions,

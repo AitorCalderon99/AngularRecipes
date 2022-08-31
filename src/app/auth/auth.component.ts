@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {NgForm} from "@angular/forms";
 import {AuthResponseData, AuthService} from "./auth.service";
 import {Observable} from "rxjs";
@@ -11,7 +11,7 @@ import * as AuthActions from "./store/auth.actions";
   selector: 'app-auth',
   templateUrl: './auth.component.html'
 })
-export class AuthComponent {
+export class AuthComponent implements OnInit, OnDestroy{
   isLoggingMode = true;
   isLoading = false;
   error: string = null;
@@ -40,7 +40,8 @@ export class AuthComponent {
       authObservable = this.authService.signUp(email, password)
     }
 
-    authObservable.subscribe(response => {
+
+    /*authObservable.subscribe(response => {
       console.log(response);
       this.isLoading = false;
       this.router.navigate(['/recipes']);
@@ -48,12 +49,23 @@ export class AuthComponent {
     }, errorMessage => {
       this.error = errorMessage;
       this.isLoading = false;
-    });
+    });*/
 
     authForm.reset();
   }
 
   onHandleError() {
     this.error = null;
+  }
+
+  ngOnDestroy(): void {
+  }
+
+  ngOnInit(): void {
+    this.store.select('auth').subscribe(authState => {
+      this.isLoading = authState.loading;
+      this.error = authState.authError;
+
+    });
   }
 }
