@@ -58,7 +58,7 @@ export class AuthService {
     let expirationDate = new Date(new Date().getTime() + +expiresIn * 1000)
     const user = new User(email, localId, idToken, expirationDate)
     //this.user.next(user);
-    this.store.dispatch(new AuthActions.Login({
+    this.store.dispatch(new AuthActions.AuthenticateSuccess({
       id: localId,
       email: email,
       token: idToken,
@@ -82,7 +82,7 @@ export class AuthService {
     const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
 
     if (loadedUser.token) {
-      this.store.dispatch(new AuthActions.Login({
+      this.store.dispatch(new AuthActions.AuthenticateSuccess({
         id: loadedUser.id,
         email: loadedUser.email,
         token: loadedUser.token,
@@ -93,32 +93,9 @@ export class AuthService {
 
   }
 
-  login(email: string, password: string,) {
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBgZUcL-r-8EQ1QTuSCRplRCREvYzAorZY',
-      {
-        email: email,
-        password: password,
-        returnSecureToken: true
-      }).pipe(catchError(this.handleError), tap(resData => {
-      this.handleAuth(resData.email, resData.localId, resData.idToken, +resData.expiresIn)
-    }));
-  }
-
-  signUp(email: string, password: string,) {
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBgZUcL-r-8EQ1QTuSCRplRCREvYzAorZY',
-      {
-        email: email,
-        password: password,
-        returnSecureToken: true
-      }).pipe(catchError(this.handleError), tap(resData => {
-      this.handleAuth(resData.email, resData.localId, resData.idToken, +resData.expiresIn)
-    }));
-  }
-
   logout() {
     //this.user.next(null);
     this.store.dispatch(new AuthActions.Logout());
-    this.router.navigate(['/user'])
     localStorage.removeItem('userData');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);

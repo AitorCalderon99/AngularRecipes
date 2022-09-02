@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {NgForm} from "@angular/forms";
 import {AuthResponseData, AuthService} from "./auth.service";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {Store} from "@ngrx/store";
 import * as fromApp from '../store/app.reducer';
@@ -11,10 +11,11 @@ import * as AuthActions from "./store/auth.actions";
   selector: 'app-auth',
   templateUrl: './auth.component.html'
 })
-export class AuthComponent implements OnInit, OnDestroy{
+export class AuthComponent implements OnInit, OnDestroy {
   isLoggingMode = true;
   isLoading = false;
   error: string = null;
+  private storeSub: Subscription;
 
   constructor(private authService: AuthService, private router: Router, private store: Store<fromApp.AppState>) {
   }
@@ -27,42 +28,31 @@ export class AuthComponent implements OnInit, OnDestroy{
     if (!authForm.valid) {
       return;
     }
-    this.isLoading = true;
     const email = authForm.value.email;
     const password = authForm.value.password;
 
-    let authObservable: Observable<AuthResponseData>;
 
     if (this.isLoggingMode) {
       //authObservable = this.authService.login(email, password);
       this.store.dispatch(new AuthActions.LoginStart({email: email, password: password}));
     } else {
-      authObservable = this.authService.signUp(email, password)
+      this.store.dispatch(new AuthActions.SignupStart({email: email, password: password}));
     }
-
-
-    /*authObservable.subscribe(response => {
-      console.log(response);
-      this.isLoading = false;
-      this.router.navigate(['/recipes']);
-
-    }, errorMessage => {
-      this.error = errorMessage;
-      this.isLoading = false;
-    });*/
 
     authForm.reset();
   }
 
   onHandleError() {
-    this.error = null;
+    this.store.dispatch(new AuthActions.ClearError())
   }
 
   ngOnDestroy(): void {
+    if (this.storeSub)
+      this.storeSub.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.store.select('auth').subscribe(authState => {
+    this.storeSub = this.store.select('auth').subscribe(authState => {
       this.isLoading = authState.loading;
       this.error = authState.authError;
 
