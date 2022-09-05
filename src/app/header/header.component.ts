@@ -42,7 +42,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogOut() {
-    this.authService.logout();
     this.store.dispatch(new AuthActions.Logout());
     this.router.navigate(['/user']);
   }
