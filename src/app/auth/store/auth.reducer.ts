@@ -13,7 +13,7 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
   switch (action.type) {
     case "AUTHENTICATE_SUCCESS":
       const user = new User(action.payload.email, action.payload.id, action.payload.token, action.payload.tokenExpirationDate);
-      return {...state, user: user, loading: false};
+      return {...state, user: user, loading: false, authError: null};
     case "SIGNUP_START":
     case "LOGIN_START":
       return {...state, authError: null, loading: true};

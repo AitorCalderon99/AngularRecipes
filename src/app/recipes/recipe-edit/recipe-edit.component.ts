@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {RecipesService} from "../recipes.service";
-import {Recipe} from "../recipe.model";
+import * as fromApp from "../../store/app.reducer";
+import {Store} from "@ngrx/store";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-recipe-edit',
@@ -14,7 +16,7 @@ export class RecipeEditComponent implements OnInit {
   editMode = false;
   recipeForm: UntypedFormGroup;
 
-  constructor(private route: ActivatedRoute, private recipesService: RecipesService, private router: Router) {
+  constructor(private route: ActivatedRoute, private recipesService: RecipesService, private router: Router, private store: Store<fromApp.AppState>) {
   }
 
   ngOnInit(): void {
@@ -35,21 +37,28 @@ export class RecipeEditComponent implements OnInit {
     let recipeIngredients = new UntypedFormArray([]);
 
     if (this.editMode) {
-      let recipe = this.recipesService.getRecipe(this.id);
-      recipeName = recipe.name;
-      recipeImg = recipe.imagePath;
-      recipeDescription = recipe.description;
-      if (recipe['ingredients']) {
-        for (let ingredient of recipe.ingredients) {
-          recipeIngredients.push(new UntypedFormGroup({
-            'name': new UntypedFormControl(ingredient.name, Validators.required),
-            'amount': new UntypedFormControl(ingredient.amount, [
-              Validators.required,
-              Validators.pattern(/^[1-9]+[0-9]*$/)
-            ])
-          }))
+      //let recipe = this.recipesService.getRecipe(this.id);
+      this.store.select('recipes').pipe(map(recipeState => {
+        return recipeState.recipes.find((recipe, index) => {
+          return index === this.id;
+        })
+      })).subscribe(recipe => {
+        recipeName = recipe.name;
+        recipeImg = recipe.imagePath;
+        recipeDescription = recipe.description;
+        if (recipe['ingredients']) {
+          for (let ingredient of recipe.ingredients) {
+            recipeIngredients.push(new UntypedFormGroup({
+              'name': new UntypedFormControl(ingredient.name, Validators.required),
+              'amount': new UntypedFormControl(ingredient.amount, [
+                Validators.required,
+                Validators.pattern(/^[1-9]+[0-9]*$/)
+              ])
+            }))
+          }
         }
-      }
+      })
+
     }
 
 

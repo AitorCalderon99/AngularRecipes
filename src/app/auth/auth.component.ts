@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {NgForm} from "@angular/forms";
-import {AuthResponseData, AuthService} from "./auth.service";
-import {Observable, Subscription} from "rxjs";
+import { AuthService} from "./auth.service";
+import { Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {Store} from "@ngrx/store";
 import * as fromApp from '../store/app.reducer';
@@ -17,7 +17,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   error: string = null;
   private storeSub: Subscription;
 
-  constructor(private authService: AuthService, private router: Router, private store: Store<fromApp.AppState>) {
+  constructor(private authService: AuthService, private store: Store<fromApp.AppState>) {
   }
 
   onSwitchMode() {
@@ -33,7 +33,6 @@ export class AuthComponent implements OnInit, OnDestroy {
 
 
     if (this.isLoggingMode) {
-      //authObservable = this.authService.login(email, password);
       this.store.dispatch(new AuthActions.LoginStart({email: email, password: password}));
     } else {
       this.store.dispatch(new AuthActions.SignupStart({email: email, password: password}));

@@ -2,14 +2,16 @@ import {Injectable} from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {RecipesService} from "../recipes/recipes.service";
 import {Recipe} from "../recipes/recipe.model";
-import {exhaustMap, map, take, tap} from "rxjs/operators";
-import {AuthService} from "../auth/auth.service";
+import {  map, tap} from "rxjs/operators";
+import {Store} from "@ngrx/store";
+import * as fromApp from "../store/app.reducer";
+import * as recipesActions from "../recipes/store/recipe.actions";
 
 @Injectable({
   providedIn: "root"
 })
 export class DataStorageService {
-  constructor(private httpClient: HttpClient, private recipesService: RecipesService, private authService: AuthService) {
+  constructor(private httpClient: HttpClient, private recipesService: RecipesService, private store: Store<fromApp.AppState>) {
   }
 
   recipesUrl = 'https://angularrecipesacalderon-default-rtdb.europe-west1.firebasedatabase.app/recipes.json';
@@ -39,7 +41,8 @@ export class DataStorageService {
           });
         }),
         tap(recipes => {
-          this.recipesService.setRecipes(recipes);
+          //this.recipesService.setRecipes(recipes);
+          this.store.dispatch(new recipesActions.setRecipes(recipes));
         })
       )
   }

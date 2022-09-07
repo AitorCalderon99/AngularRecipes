@@ -19,19 +19,25 @@ export interface AuthResponseData {
   registered?: boolean;
 }
 
-const handleAuthentication = (expiresIn: number, email: string, id: string, token: string) => {
-  const expirationDate = new Date(
-    new Date().getTime() + +expiresIn * 1000
-  );
-  const user = new User(email, id, token, expirationDate);
+
+const handleAuthentication = (
+  expiresIn: number,
+  email: string,
+  userId: string,
+  token: string
+) => {
+
+  const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+  const user = new User(email, userId, token, expirationDate);
   localStorage.setItem('userData', JSON.stringify(user));
   return new AuthActions.AuthenticateSuccess({
     email: email,
-    id: id,
+    id: userId,
     token: token,
     tokenExpirationDate: expirationDate
   });
-}
+};
+
 const handleError = (errorRes) => {
   let errorMessage = 'An uknown error ocurred.'
   if (!errorRes.error || !errorRes.error.error) {
