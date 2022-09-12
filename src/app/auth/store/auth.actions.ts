@@ -30,7 +30,7 @@ export class SignupStart implements Action {
 export class AuthenticateSuccess implements Action {
   readonly type = AUTHENTICATE_SUCCESS;
 
-  constructor(public payload: { email: string, id: string, token: string, tokenExpirationDate: Date }) {
+  constructor(public payload: { email: string, id: string, token: string, tokenExpirationDate: Date, redirect: Boolean }) {
   }
 
 }
