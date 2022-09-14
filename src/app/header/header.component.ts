@@ -1,5 +1,4 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {DataStorageService} from "../shared/data-storage.service";
+import {Component, OnDestroy, OnInit, Output} from '@angular/core';
 import {AuthService} from "../auth/auth.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
@@ -22,7 +21,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   authSubscription: Subscription;
 
-  constructor(private dataStorageService: DataStorageService,private authService: AuthService, private router: Router,private store: Store<fromApp.AppState>) { }
+  constructor(private authService: AuthService, private router: Router,private store: Store<fromApp.AppState>) { }
 
   ngOnInit(): void {
     this.authSubscription = this.store.select('auth').pipe(map(authState => {return authState.user})).subscribe(user => {
@@ -32,7 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   onSaveData() {
-    this.dataStorageService.storeRecipes();
+    this.store.dispatch(new RecipeActions.storeRecipes());
   }
 
   onFetchData() {
