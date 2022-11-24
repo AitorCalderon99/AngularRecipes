@@ -82,7 +82,7 @@ Used Angular Features:
   - Authentication
   - Route protection with route guards
 
-* [![Angular][Angular.io]][Angular-url] * [![Bootstrap][Bootstrap.com]][Bootstrap-url] * Firebase (Back-end)
+[![Angular][Angular.io]][Angular-url] [![Bootstrap][Bootstrap.com]][Bootstrap-url] Firebase (Back-end)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
