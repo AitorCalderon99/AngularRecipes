@@ -15,6 +15,7 @@ import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../environments/environment";
 import {StoreRouterConnectingModule} from "@ngrx/router-store";
 import {RecipeEffects} from "./recipes/store/recipe.effects";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import {RecipeEffects} from "./recipes/store/recipe.effects";
     StoreDevtoolsModule.instrument({logOnly: environment.production}),
     StoreRouterConnectingModule.forRoot(),
     HttpClientModule,
-    SharedModule
+    SharedModule,
+    BrowserAnimationsModule
   ],
   providers: [ {
     provide: HTTP_INTERCEPTORS,
