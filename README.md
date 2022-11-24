@@ -46,8 +46,6 @@ It has a complete authentication system, in which we can create users, log in an
 
 You can freely create the users you see fit and perform the actions you want in the demo.
 
-Translated with www.DeepL.com/Translator (free version)
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
