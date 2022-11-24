@@ -106,6 +106,7 @@ _Below is an example of how you can instruct your audience on installing and set
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+It is really simple and intuitive, I will add screenshots soon.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
