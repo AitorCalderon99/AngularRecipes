@@ -71,12 +71,19 @@ Use the `BLANK_README.md` to get started.
 
 ### Built With
 
-This project has been built with angular 12+ and bootstrap
+This project has been built with angular 12+ and bootstrap.
 
+Used Angular Features:
+  - NGRX
+  - Dynamic components
+  - Routing
+  - Forms
+  - HTTP Requests
+  - Authentication
+  - Route protection with route guards
 
-* [![Angular][Angular.io]][Angular-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* Firebase (Back-end)
+* [![Angular][Angular.io]][Angular-url] * [![Bootstrap][Bootstrap.com]][Bootstrap-url] * Firebase (Back-end)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -85,7 +92,6 @@ This project has been built with angular 12+ and bootstrap
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
