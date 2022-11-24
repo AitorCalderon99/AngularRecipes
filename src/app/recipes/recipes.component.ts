@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import * as RecipeActions from "./store/recipe.actions";
+import {Store} from "@ngrx/store";
 
 @Component({
   selector: 'app-recipes',
@@ -7,9 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RecipesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
+    this.store.dispatch(new RecipeActions.fetchRecipes());
   }
 
 

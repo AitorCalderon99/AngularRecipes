@@ -6,6 +6,7 @@ import {Store} from "@ngrx/store";
 import {map} from "rxjs/operators";
 import * as RecipesActions from "../store/recipe.actions";
 import {Subscription} from "rxjs";
+import * as RecipeActions from "../store/recipe.actions";
 
 @Component({
   selector: 'app-recipe-edit',
@@ -82,7 +83,11 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     } else {
       this.store.dispatch(new RecipesActions.addRecipe(this.recipeForm.value))
     }
+    this.store.dispatch(new RecipeActions.storeRecipes());
+
     this.router.navigate(['../'], {relativeTo: this.route});
+
+
   }
 
   get controls() { // a getter!
